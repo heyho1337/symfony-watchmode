@@ -8,7 +8,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Service\WmService;
-
 class AppController extends AbstractController
 {
 
@@ -24,10 +23,12 @@ class AppController extends AbstractController
         if ($this->security->isGranted('ROLE_USER')) {
             // If the user is authenticated, render authenticated homepage
 			$user = $this->security->getUser();
-			$wmList = $this->wm->list();
+			$streamingList = $this->wm->streamingList();
+			
             return $this->render('app/index.html.twig', [
                 'controller_name' => 'AppController',
-				'wmList' => $wmList,
+				'streamingList' => $streamingList,
+				'user' => $user
             ]);
         } else {
             // If the user is not authenticated, render non-authenticated homepage

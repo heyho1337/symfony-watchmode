@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello StreamingController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+	<img src="{{streamingRow['logo_100px']}}"/>
+    <h1>{{streamingRow['name']}}</h1>
+	{% if genreList is defined %}
+		<input type="text" id="contentSearch" placeholder="Search...">
+		<ul id="genreList">
+			{% for item in genreList %}
+				<div class="check">
+					<input type="checkbox" name="genre" id="genre_{{item['id']}}" value="{{item['id']}}"/>
+					<label for="genre_{{item['id']}}">{{item['name']}}</label>
+				</div>
+			{% endfor %}
+		</ul>
+		<ul id="contentList">
+
+		</ul>
+	{% else %}
+		<p>No Watchmode list available.</p>
+	{% endif %}
+
+</div>
+
+<script>
+    const contentSearch = document.getElementById('contentSearch');
+    const contentList = document.getElementById('contentList');
+    const genreCheckboxes = document.querySelectorAll('[name="genre"]');
+    const genreList = {{ genreList | json_encode() | raw }};
+    let selectedGenres = [];
+    let contentListData = []; // Initialize an empty array to hold the content list data
+
+    // Function to update the content list based on selected genres and search term
+    function updateContentList() {
+        // Get IDs of selected genres
+        const selectedGenreIds = selectedGenres.map(genreId => parseInt(genreId));
+		let url = "";
+        // Make AJAX request to the contentList route
+		if(selectedGenreIds.length > 0){
+			url = `/content/{{sourceId}}/${selectedGenreIds.join(',')}`;
+		}
+		else{
+			url = `/content/{{sourceId}}`;
+		}
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                contentListData = data; // Update the content list data
+				console.log(contentListData);
+                // Filter content list based on search term
+                const searchTerm = contentSearch.value.toLowerCase();
+                const filteredList = contentListData.filter(item => item.title.toLowerCase().includes(searchTerm));
+
+                renderResults(filteredList); // Render filtered results
+            })
+            .catch(error => console.error('Error fetching content list:', error));
+    }
+
+    // Event listener for genre checkboxes
+    genreCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+            // Update selected genres array based on checkbox state
+            if (checkbox.checked) {
+                selectedGenres.push(checkbox.value);
+            } else {
+                selectedGenres = selectedGenres.filter(genreId => genreId !== checkbox.value);
+            }
+            
+            // Update content list
+            updateContentList();
+        });
+    });
+
+    // Event listener for content search input
+    contentSearch.addEventListener('input', () => {
+        // Filter content list based on search term
+        const searchTerm = contentSearch.value.toLowerCase();
+        const filteredList = contentListData.filter(item => item.title.toLowerCase().includes(searchTerm));
+        renderResults(filteredList); // Render filtered results
+    });
+
+    // Function to render results in the content list
+    function renderResults(list) {
+        contentList.innerHTML = '';
+        list.forEach(item => {
+            contentList.innerHTML += `<li><a href="/details/${item.id}">${item.title}</a></li>`;
+        });
+    }
+
+    // Initial update of content list
+    updateContentList();
+</script>
+{% endblock %}

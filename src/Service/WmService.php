@@ -4,7 +4,6 @@ namespace App\Service;
 
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
-
 class WmService
 {
     protected $apiKey;
@@ -16,11 +15,31 @@ class WmService
         $this->apiUrl = $_ENV['WM_APIURL'];
     }
 
-    public function list(): array{
+    public function streamingList(): array
+	{
 		return $this->query("sources");
 	}
+
+	public function genreList(): array
+	{
+		return $this->query("genres");
+	}
+
+	public function row(string $id): array | false
+	{
+		$list = $this->streamingList();
+		$result = array_filter($list, function($row) use ($id) {
+			return $row['id'] == $id;
+		});
+		return $result ? reset($result) : false;
+	}
+
+	public function details(string $id): array
+	{
+		return $this->query("title/{$id}/details");
+	}
 	
-	protected function query(string $url): array
+	public function query(string $url): array
     {
         $client = HttpClient::create();
         

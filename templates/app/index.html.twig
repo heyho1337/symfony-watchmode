@@ -9,14 +9,35 @@
 </style>
 
 <div class="example-wrapper">
-    {% if wmList is defined %}
-		<ul>
-			{% for item in wmList %}
-				<li>{{ item['name'] }}</li>
+    {% if streamingList is defined %}
+		<input type="text" id="streamingSearch" placeholder="Search...">
+		<ul id="streamingList">
+			{% for item in streamingList %}
+				<li><a href="/streaming/{{ item['id'] }}">{{ item['name'] }}</a></li>
 			{% endfor %}
 		</ul>
 	{% else %}
 		<p>No Watchmode list available.</p>
 	{% endif %}
 </div>
+
+<script>
+    const streamingSearch = document.getElementById('streamingSearch');
+    const streamingList = document.getElementById('streamingList');
+    const streamingJson = {{ streamingList | json_encode() | raw }};
+
+    streamingSearch.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const filteredList = streamingJson.filter(item => item.name.toLowerCase().includes(searchTerm));
+        renderResults(filteredList);
+    });
+
+    function renderResults(list) {
+        streamingList.innerHTML = '';
+        list.forEach(item => {
+            streamingList.innerHTML += `<li><a href="/streaming/${item.id}">${item.name}</a></li>`;
+        });
+    }
+</script>
+
 {% endblock %}
