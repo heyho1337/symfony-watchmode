@@ -21,9 +21,13 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+
+    App\EventListener\UserDataListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
     
-    Symfony\Component\Mercure\PublisherInterface: '@mercure.default_hub'
-    Symfony\Component\Mercure\HubInterface: '@mercure.default_hub'
+    #Symfony\Component\Mercure\PublisherInterface: '@mercure.default_hub'
+    #Symfony\Component\Mercure\HubInterface: '@mercure.default_hub'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

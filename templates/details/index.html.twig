@@ -12,5 +12,17 @@
     <h1>{{details['title']}}</h1>
 
     <img src="{{details['poster']}}"/>
+	{{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+	
+	{# Display a message area for AJAX responses #}
+    <div id="ajax-response"></div>
 </div>
 {% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/AddToFavourites.js') }}"></script>
+{% endblock %}
+
+

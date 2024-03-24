@@ -5,7 +5,6 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Service\WmService;
 class AppController extends AbstractController
@@ -22,13 +21,12 @@ class AppController extends AbstractController
         // Check if the user is authenticated
         if ($this->security->isGranted('ROLE_USER')) {
             // If the user is authenticated, render authenticated homepage
-			$user = $this->security->getUser();
 			$streamingList = $this->wm->streamingList();
 			
             return $this->render('app/index.html.twig', [
                 'controller_name' => 'AppController',
 				'streamingList' => $streamingList,
-				'user' => $user
+				'user' => $this->user
             ]);
         } else {
             // If the user is not authenticated, render non-authenticated homepage
