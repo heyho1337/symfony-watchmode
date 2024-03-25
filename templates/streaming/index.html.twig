@@ -30,6 +30,11 @@
 
 </div>
 
+{% block javascripts %}
+    <script src="{{ asset('js/AddToFavourites.js') }}"></script>
+	<script src="{{ asset('js/Dialog.js') }}"></script>
+{% endblock %}
+
 <script>
     const contentSearch = document.getElementById('contentSearch');
     const contentList = document.getElementById('contentList');
@@ -91,7 +96,10 @@
     function renderResults(list) {
         contentList.innerHTML = '';
         list.forEach(item => {
-            contentList.innerHTML += `<li><a href="/details/${item.id}">${item.title}</a></li>`;
+            contentList.innerHTML += `<li>
+				<a href="/details/${item.id}">${item.title}</a>
+				${item.form}
+			</li>`;
         });
     }
 

@@ -13,7 +13,7 @@ function submitForm(event) {
 	.then(response => response.json())
 	.then(data => {
 		console.log(data);
-		document.getElementById('ajax-response').innerText = data.message;
+		$('body').append(data.result)
 	})
 	.catch(error => {
 		console.error('Error:', error);

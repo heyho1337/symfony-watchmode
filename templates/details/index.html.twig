@@ -12,9 +12,7 @@
     <h1>{{details['title']}}</h1>
 
     <img src="{{details['poster']}}"/>
-	{{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
+	{% include '/favourites/AddToFavourites.html.twig' %}
 	
 	{# Display a message area for AJAX responses #}
     <div id="ajax-response"></div>
@@ -23,6 +21,7 @@
 
 {% block javascripts %}
     <script src="{{ asset('js/AddToFavourites.js') }}"></script>
+	<script src="{{ asset('js/Dialog.js') }}"></script>
 {% endblock %}
 
 
