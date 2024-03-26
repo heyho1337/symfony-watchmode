@@ -25,7 +25,27 @@
 
 		</ul>
 	{% else %}
-		<p>No Watchmode list available.</p>
+		<p class="error">No genres available.</p>
+	{% endif %}
+
+	{% if recent is defined %}
+		<ul id="recent">
+			{% for item in recent %}
+				<li>
+					<a href="/details/{{item['id']}}">
+						<img src="{{item['poster_url']}}"/>
+						<h2>{{item['title']}}</h2>
+						<span data-title="release date" class="info release">{{item['source_release_date']}}</span>
+						{% if item['type'] == 'tv_series' %}
+							<span data-title="season" class="info season">{{item['season_number']}}</span>
+						{% endif %}
+					</a>
+					{{ item['form']|raw }}
+				</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p class="error">No recent content available.</p>
 	{% endif %}
 
 </div>
@@ -96,14 +116,11 @@
     function renderResults(list) {
         contentList.innerHTML = '';
         list.forEach(item => {
-            contentList.innerHTML += `<li>
-				<a href="/details/${item.id}">${item.title}</a>
-				${item.form}
-			</li>`;
+            contentList.innerHTML += item.twig;
         });
     }
 
     // Initial update of content list
-    updateContentList();
+    //updateContentList();
 </script>
 {% endblock %}

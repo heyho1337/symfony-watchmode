@@ -8,14 +8,19 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
+<div class="details">
     <h1>{{details['title']}}</h1>
 
     <img src="{{details['poster']}}"/>
 	{% include '/favourites/AddToFavourites.html.twig' %}
-	
-	{# Display a message area for AJAX responses #}
-    <div id="ajax-response"></div>
+	<p class="desc">{{details['plot_overview']}}</p>
+	<span data-title="release date" class="release">{{details['release_date']}}</span>
+	<span data-title="ended" class="end">{{details['end_year']}}</span>
+	<span data-title="rating" class="rating">{{details['user_rating']}}</span>
+	{% set trailer = details['trailer'] %}
+
+	<iframe class="trailer" width="560" height="315" src="{{ trailer|replace({'watch?v=': 'embed/'}) }}" frameborder="0" allowfullscreen></iframe>
+
 </div>
 {% endblock %}
 
