@@ -1,3 +1,4 @@
-body {
-    background-color: skyblue;
-}
+@import "tailwindcss/base" layer(my-base);
+@import "tailwindcss/utilities" layer(my-base);
+@import "tailwindcss/components" layer(my-base);
+@import "./custom.css" layer(my-utilities);

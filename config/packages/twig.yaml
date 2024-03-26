@@ -1,6 +1,7 @@
 twig:
     file_name_pattern: '*.twig'
-
+    globals:
+        cdn: '%env(CDN)%'
 when@test:
     twig:
         strict_variables: true

@@ -3,16 +3,58 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
         {% endblock %}
 
 		<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
     <body>
+		<header class="grid items-center grid-cols-[110px,auto,28px] gap-x-[8px]">
+			<picture>
+				<source type="image/png" srcset="{{cdn}}images/logo_small.png">
+				<source type="image/webp" srcset="{{cdn}}images/logo_small.webp">
+				<img width="110" height='75' src="{{cdn}}images/logo_small.png" alt="Logo" title="Logo"/>
+			</picture>
+			<nav class="block md:grid justify-center mainNav">
+				<input class="block md:hidden " type="checkbox"/>
+				<span class="block md:hidden icon-before icon-bars"></span>
+				<ul class="opacity-0 h-0 z-0 pointer-events-none md:flex md:gap-x-[8px] md:opacity-100 md:h-auto md:z-1 md:pointer-events-auto">
+					<li>
+						<a href="/" title="">Home</a>
+					</li>
+					<li>
+						<a href="/about" title="">About</a>
+					</li>
+					<li>
+						<a href="/contact" title="">Contact</a>
+					</li>
+				</ul>
+			</nav>
+
+			<nav class="userNav relative">
+				<input type="checkbox" class="opacity-0 z-10 absolute w-full h-full cursor-pointer bg-transparent border-0 p-0 m-0 outline-none"/>
+				<span class="icon-before icon-circle-user text-[28px] leading-[28px] align-top block"></span>
+				<ul class="opacity-0 h-0 z-0 pointer-events-none">
+					<li>
+						<a href="/profile" title="">Profile</a>
+					</li>
+					<li>
+						<a href="/favourites" title="">Favourites</a>
+					</li>
+					<li>
+						<a href="/logout" title="">Logout</a>
+					</li>
+				</ul>
+			</nav>
+
+		</header>
         {% block body %}{% endblock %}
     </body>
 </html>
