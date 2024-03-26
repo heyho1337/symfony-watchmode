@@ -10,9 +10,7 @@ as of now, there is a day caching set on the api calls
 
 # incomming
 2.create favourites page
-	titles list
 	sorting by genre
-	remove from list function
 3.modify html
 4.add design
 6.seo

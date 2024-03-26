@@ -21,6 +21,12 @@ class UserFavourites
     #[ORM\Column(length: 255)]
     private ?string $favStreamId = null;
 
+	#[ORM\Column(length: 255)]
+    private ?string $favSourceId = null;
+
+	#[ORM\Column(length: 255)]
+    private ?string $favSourceName = null;
+
     #[ORM\Column(length: 100)]
     private ?string $favType = null;
 
@@ -37,6 +43,30 @@ class UserFavourites
     public function setFavUserId(int $favUserId): static
     {
         $this->favUserId = $favUserId;
+
+        return $this;
+    }
+
+	public function getFavSourceId(): ?string
+    {
+        return $this->favSourceId;
+    }
+
+    public function setFavSourceId(string $favSourceId): static
+    {
+        $this->favSourceId = $favSourceId;
+
+        return $this;
+    }
+
+	public function getFavSourceName(): ?string
+    {
+        return $this->favSourceName;
+    }
+
+    public function setFavSourceName(string $favSourceName): static
+    {
+        $this->favSourceName = $favSourceName;
 
         return $this;
     }

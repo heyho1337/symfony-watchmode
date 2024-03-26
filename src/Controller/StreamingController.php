@@ -26,12 +26,13 @@ class StreamingController extends AbstractController
 		$genreList = $this->wm->genreList();
 		$recent = $this->wm->recent($id);
 		foreach($recent as &$row){
-			$form = $this->createForm(AddToFavouriteType::class, null, ['action' => $this->generateUrl('save_to_favourites', ['id' => $row['id']])]);
+			$form = $this->createForm(AddToFavouriteType::class, null, ['action' => $this->generateUrl('save_to_favourites', ['sourceId' => $id, 'id' => $row['id']])]);
 			$formHtml = $this->renderView('favourites/AddToFavourites.html.twig', [
 				'form' => $form->createView(),
 			]);
 			$row['form'] = $formHtml;
 		}
+
 		return $this->render('streaming/index.html.twig', [
             'controller_name' => 'StreamingController',
 			'streamingRow' => $streamingRow,
@@ -45,20 +46,20 @@ class StreamingController extends AbstractController
 	public function contentSourceList(string $sourceIds): JsonResponse
 	{
 		$result = $this->wm->query("list-titles?source_ids={$sourceIds}");
-		return $this->setTitles(($result['titles']));
+		return $this->setTitles($result['titles'],$sourceIds);
 	}
 
 	#[Route('/content/{sourceIds}/{genreIds}', name: 'app_contentSourceGenreList', methods:['get'])]
 	public function contentSourceGenreList(string $sourceIds, string $genreIds): JsonResponse
 	{
 		$result = $this->wm->query("list-titles?source_ids={$sourceIds}&genres={$genreIds}");
-		return $this->setTitles(($result['titles']));
+		return $this->setTitles($result['titles'],$sourceIds);
 	}
 
-	protected function setTitles(array $titles): JsonResponse
+	protected function setTitles(array $titles,string $id): JsonResponse
 	{
 		foreach($titles as &$title){
-			$form = $this->createForm(AddToFavouriteType::class, null, ['action' => $this->generateUrl('save_to_favourites', ['id' => $title['id']])]);
+			$form = $this->createForm(AddToFavouriteType::class, null, ['action' => $this->generateUrl('save_to_favourites', ['sourceId' => $id, 'id' => $title['id']])]);
 			$formHtml = $this->renderView('favourites/AddToFavourites.html.twig', [
 				'form' => $form->createView(),
 			]);

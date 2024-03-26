@@ -21,6 +21,22 @@ class UserFavouritesRepository extends ServiceEntityRepository
         parent::__construct($registry, UserFavourites::class);
     }
 
+	public function findByGroupedFavSourceId(int $userId): array
+    {
+        $rows = $this->createQueryBuilder('f')
+            ->andWhere('f.favUserId = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+            ->getResult();
+
+        $groupedRows = [];
+        foreach ($rows as $row) {
+            $groupedRows[$row->getFavSourceName()][] = $row;
+        }
+
+        return $groupedRows;
+    }
+
     //    /**
     //     * @return UserFavourites[] Returns an array of UserFavourites objects
     //     */

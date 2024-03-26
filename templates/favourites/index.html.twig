@@ -9,12 +9,36 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>{{ user.userName }}'s favourites ✅</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>F:/-heyhodesigns-/symfony/symfony-watchmode/src/Controller/FavouritesController.php</code></li>
-        <li>Your template at <code>F:/-heyhodesigns-/symfony/symfony-watchmode/templates/favourites/index.html.twig</code></li>
-    </ul>
+    {% if favourites is defined %}
+		<div id="recent">
+			{% for groupKey, group in favourites %}
+				<h2>{{groupKey}}</h2>
+				<ul>
+					{% for item in group %}
+						<li>
+							<a href="/details/{{item.details.id}}">
+								<img src="{{item.details.poster}}"/>
+								<h2>{{item.details.title}}</h2>
+								<p class="desc">{{item.details.plot_overview}}</p>
+								<span data-title="release date" class="release">{{item.details.release_date}}</span>
+								<span data-title="ended" class="end">{{item.details.end_year}}</span>
+								<span data-title="rating" class="rating">{{item.details.user_rating}}</span>
+							</a>
+							{{ item.form|raw }}
+						</li>
+					{% endfor %}
+				</ul>
+			{% endfor %}
+		</div>
+	{% else %}
+		<p class="error">No favourite content available.</p>
+	{% endif %}
 </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('js/RemoveFromFavourites.js') }}"></script>
+	<script src="{{ asset('js/Dialog.js') }}"></script>
 {% endblock %}
