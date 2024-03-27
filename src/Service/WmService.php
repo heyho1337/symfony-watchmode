@@ -6,23 +6,32 @@ use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Contracts\Cache\ItemInterface;
-use DateTime;
-class WmService
-{
-    protected $apiKey;
-    protected $apiUrl;
-	protected $cache;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
-    public function __construct()
+use DateTime;
+class WmService extends AbstractController
+{
+    protected string $apiKey;
+    protected string$apiUrl;
+	protected FilesystemAdapter $cache;
+	protected string $dir;
+
+    public function __construct(ParameterBagInterface $params)
     {
         $this->apiKey = $_ENV['WM_APIKEY'];
         $this->apiUrl = $_ENV['WM_APIURL'];
 		$this->cache = new FilesystemAdapter();
+		$this->dir = $params->get('kernel.project_dir') . '/public/images/streamLogos/';
     }
 
     public function streamingList(): array
 	{
-		return $this->query("sources");
+		$sources = $this->query("sources");
+		foreach($sources as &$row){
+			$this->checkLogo($row);
+		}
+		return $sources;
 	}
 
 	public function genreList(): array
@@ -34,6 +43,7 @@ class WmService
 	{
 		$list = $this->streamingList();
 		$result = array_filter($list, function($row) use ($id) {
+			$this->checkLogo($row);
 			return $row['id'] == $id;
 		});
 		return $result ? reset($result) : false;
@@ -63,12 +73,23 @@ class WmService
     {
         $cacheKey = md5($url);
         $cachedData = $this->cache->get($cacheKey, function (ItemInterface $item) use ($url) {
-            $item->expiresAfter(3600 * 24);
+            $item->expiresAfter(3600 * 24 * 10);
             return $this->fetchDataFromApi($url);
         });
 
         return $cachedData;
     }
+
+	private function checkLogo(&$row)
+	{
+		$img = $this->dir.$row['ios_scheme']."_".$row['id'].".png";
+		if(file_exists($img)){
+			$row['logo'] = true;
+		}
+		else{
+			$row['logo'] = false;
+		}
+	}
 
 	private function fetchDataFromApi(string $url): array
     {

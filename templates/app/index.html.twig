@@ -4,18 +4,30 @@
 
 {% block body %}
 
-<div class="example-wrapper">
+<section class="streamingList">
     {% if streamingList is defined %}
 		<input type="text" id="streamingSearch" placeholder="Search...">
-		<ul id="streamingList">
-			{% for item in streamingList %}
-				<li><a href="/streaming/{{ item['id'] }}">{{ item['name'] }}</a></li>
+		<ul class="grid items-center grid-cols-6 gap-[30px] max-w-[1000px] mx-auto">
+			{% for i, item in streamingList %}
+				<li class="radialBg rounded-[8px] aspect-w-1 aspect-h-1 shadow-lg shadow-slate-800">
+					<a class="grid place-items-center" href="/streaming/{{ item['id'] }}">	
+                        {% if item['logo'] == true %}
+                            <picture>
+                                <source type="image/png" srcset="{{ cdn }}images/streamLogos/{{ item['ios_scheme'] }}_{{ item['id'] }}.png">
+                                <source type="image/webp" srcset="{{ cdn }}images/streamLogos/{{ item['ios_scheme'] }}_{{ item['id'] }}.webp">
+                                <img width="100" height="100" src="{{ cdn }}images/streamLogos/{{ item['ios_scheme'] }}_{{ item['id'] }}.png" alt="{{ item['name'] }}" {% if i >= 25 %}loading="lazy"{% endif %}/>
+                            </picture>
+                        {% else %}
+                            <img width="100" height="100" src="{{ item['logo_100px'] }}" alt="Placeholder" {% if i >= 25 %}loading="lazy"{% endif %}/>
+                        {% endif %}
+					</a>
+				</li>
 			{% endfor %}
 		</ul>
 	{% else %}
 		<p>No Watchmode list available.</p>
 	{% endif %}
-</div>
+</section>
 
 <script>
     const streamingSearch = document.getElementById('streamingSearch');

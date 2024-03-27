@@ -1,4 +1,5 @@
-@import "tailwindcss/base" layer(my-base);
-@import "tailwindcss/utilities" layer(my-base);
-@import "tailwindcss/components" layer(my-base);
-@import "./custom.css" layer(my-utilities);
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+@import "custom.css" layer(utilities);

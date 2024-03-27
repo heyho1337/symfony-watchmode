@@ -1,0 +1,10 @@
+@layer default,custom;
+
+@import "all.css";
+@import "./custom.css" layer(custom);
+
+@layer default {
+	@tailwind base;
+	@tailwind components;
+	@tailwind utilities;
+}
