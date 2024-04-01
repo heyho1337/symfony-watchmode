@@ -8,6 +8,7 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Psr\Log\LoggerInterface;
 
 use DateTime;
 class WmService extends AbstractController
@@ -17,7 +18,7 @@ class WmService extends AbstractController
 	protected FilesystemAdapter $cache;
 	protected string $dir;
 
-    public function __construct(ParameterBagInterface $params)
+    public function __construct(ParameterBagInterface $params, protected LoggerInterface $logger)
     {
         $this->apiKey = $_ENV['WM_APIKEY'];
         $this->apiUrl = $_ENV['WM_APIURL'];
@@ -73,8 +74,9 @@ class WmService extends AbstractController
     {
         $cacheKey = md5($url);
         $cachedData = $this->cache->get($cacheKey, function (ItemInterface $item) use ($url) {
-            $item->expiresAfter(3600 * 24 * 10);
-            return $this->fetchDataFromApi($url);
+            $item->expiresAfter((int)$_ENV['CACHE']);
+			$this->logger->info('Cache miss: Populating favourites from database');
+           	return $this->fetchDataFromApi($url);
         });
 
         return $cachedData;
@@ -94,7 +96,7 @@ class WmService extends AbstractController
 	private function fetchDataFromApi(string $url): array
     {
         $client = HttpClient::create();
-        
+        $this->logger->info('Cache miss: fecthing  data');
         try {
             $response = $client->request('GET', "{$this->apiUrl}/{$url}", [
                 'query' => [

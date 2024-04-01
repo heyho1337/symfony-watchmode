@@ -8,7 +8,12 @@ framework:
 
     #esi: true
     #fragments: true
-
+    cache:
+        pools:
+            my_cache_pool:
+                adapter: cache.adapter.filesystem
+                default_lifetime: 3600 # Set your desired cache expiration time
+                public: false
 when@test:
     framework:
         test: true

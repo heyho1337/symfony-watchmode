@@ -19,8 +19,8 @@
             
         {% endblock %}
     </head>
-    <body class="font-audio bg-sky-50">
-		<header class="z-10 shadow-lg sticky top-0 grid items-center bg-gradient-to-r from-blue-50 from-[115px] via-blue-600 via-40% to-blue-950 to-90% p-[10px] grid-cols-[89px,auto,28px] gap-x-[16px] text-slate-50">
+    <body class="font-audio bg-slate-800">
+		<header class="z-10 shadow-lg sticky top-0 grid items-center bg-gradient-to-r from-blue-50 from-[115px] via-blue-600 via-40% to-black to-90% p-[10px] grid-cols-[89px,auto,28px] gap-x-[16px] text-slate-50">
 			<picture>
 				<source type="image/png" srcset="{{cdn}}images/logo6.png">
 				<source type="image/webp" srcset="{{cdn}}images/logo6.webp">
@@ -45,21 +45,21 @@
 			<nav class="userNav relative">
 				<input type="checkbox" class="opacity-0 z-10 absolute w-full h-full cursor-pointer bg-transparent border-0 p-0 m-0 outline-none"/>
 				<span class="icon-before icon-solid fa-circle-user text-[28px] leading-[28px] align-top block"></span>
-				<ul class="absolute right-0 opacity-0 h-0 z-0 pointer-events-none">
+				<ul class="bg-slate-900 shadow-md shadow-slate-950 rounded-[8px] absolute right-0 opacity-0 h-0 z-0 pointer-events-none translate-y-[-50px] font-ox font-medium mt-[30px]">
 					<li>
-						<a href="/profile" title="">Profile</a>
+						<a href="/profile" class="hover:text-cyan-300" title="">Profile</a>
 					</li>
 					<li>
-						<a href="/favourites" title="">Favourites</a>
+						<a href="/favourites" class="hover:text-cyan-300" title="">Favourites</a>
 					</li>
 					<li>
-						<a href="/logout" title="">Logout</a>
+						<a href="/logout" class="hover:text-cyan-300" title="">Logout</a>
 					</li>
 				</ul>
 			</nav>
 
 		</header>
-		<main>
+		<main class="mt-[20px]">
        		{% block body %}{% endblock %}
 		</main>
     </body>

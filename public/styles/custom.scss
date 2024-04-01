@@ -5,3 +5,37 @@
 	background: rgb(255,255,255);
 	background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
 }
+.userNav{
+	ul{
+		line-height: 2;
+		padding:0px 20px;
+		width:118px;
+		transition: opacity 0.5s ease, height 0.5s ease, transform 0.5s ease, line-height 0.5s ease, padding 0.5s ease;
+		li{
+			a{
+				transition: opacity 0.5s ease, color 0.5s ease;
+			}
+		}
+	}
+	> span{
+		transition: color 0.5s ease;
+	}
+	input[type="checkbox"]{
+		&:checked ~ ul{
+			transform: translateY(0px);
+			opacity:1;
+			height:initial;
+			z-index: 1;
+			pointer-events: initial;
+			padding:20px;
+			li{
+				a{
+					opacity:1;
+				}
+			}
+		}
+		&:hover ~ span{
+			color:rgb(103 232 249);
+		}
+	}
+}
