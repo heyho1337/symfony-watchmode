@@ -16,7 +16,7 @@ use App\Form\RemoveFromFavouriteType;
 use App\Repository\UserFavouritesRepository;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use App\Message\Test;
+use App\Message\AddToFavourites;
 use Symfony\Component\Messenger\MessageBusInterface;
 class FavouritesController extends AbstractController
 {
@@ -33,10 +33,8 @@ class FavouritesController extends AbstractController
     }
 
 	#[Route('/favourites', name: 'app_favourites')]
-    public function index(MessageBusInterface $messageBus): Response
+    public function index(): Response
 	{
-		
-        $messageBus->dispatch(new Test('1234567890', 'Hello from Symfony!'));
 		$cacheKey = md5("favourites_cache");
 		$favourites = $this->cache->get($cacheKey, function (ItemInterface $item){
             $item->expiresAfter((int)$_ENV['CACHE']);
@@ -95,9 +93,19 @@ class FavouritesController extends AbstractController
 	}
 
 	#[Route('/details/{sourceId}/{id}/save', name: 'save_to_favourites', methods: ['POST'])]
-    public function addToFavourites(Request $request, string $sourceId, string $id): Response
+    public function addToFavourites(MessageBusInterface $messageBus, Request $request, string $sourceId, string $id): Response
     {
-		try {
+		$form = $this->createForm(AddToFavouriteType::class);
+        $form->handleRequest($request);
+
+        // Check if the form is submitted and valid
+        if ($form->isSubmitted() && $form->isValid()) {
+			$userId = $this->user->getUserId();
+			$messageBus->dispatch(new AddToFavourites($userId, $sourceId, $id));
+			$dialog = new DialogController();
+            return $this->json(['result' => $dialog->showDialog('Added to Favourites')]);
+		}
+		/*try {
 			$form = $this->createForm(AddToFavouriteType::class, null, ['action' => $this->generateUrl('save_to_favourites', ['sourceId' => $sourceId, 'id' => $id])]);
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -121,6 +129,6 @@ class FavouritesController extends AbstractController
         } catch (\Exception $e) {
             $this->logger->error('An error occurred: ' . $e->getMessage());
             return $this->json(['result' => 'An error occurred while processing the form'], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        }*/
     }
 }

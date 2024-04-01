@@ -21,7 +21,6 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-
     App\EventListener\UserDataListener:
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }

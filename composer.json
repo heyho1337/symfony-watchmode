@@ -3,7 +3,7 @@
     "type": "project",
     "license": "proprietary",
     "description": "A minimal Symfony project recommended to create bare bones applications",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": ">=8.2",
@@ -36,6 +36,7 @@
         "symfony/process": "7.0.*",
         "symfony/property-access": "7.0.*",
         "symfony/property-info": "7.0.*",
+        "symfony/redis-messenger": "7.0.*",
         "symfony/runtime": "7.0.*",
         "symfony/security-bundle": "7.0.*",
         "symfony/serializer": "7.0.*",

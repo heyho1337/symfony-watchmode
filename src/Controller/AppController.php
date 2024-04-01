@@ -18,7 +18,9 @@ class AppController extends AbstractController
 	#[Route('/', name: 'app_home')]
     public function index(): Response
     {
-        // Check if the user is authenticated
+        
+	//phpinfo();
+	// Check if the user is authenticated
         if ($this->security->isGranted('ROLE_USER')) {
             // If the user is authenticated, render authenticated homepage
 			$streamingList = $this->wm->streamingList();
