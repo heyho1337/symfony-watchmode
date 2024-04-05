@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Service\WmService;
-class AppController extends AbstractController
+class AppController extends BaseController
 {
 
     public function __construct(protected Security $security, protected WmService $wm)
@@ -28,7 +28,7 @@ class AppController extends AbstractController
             return $this->render('app/index.html.twig', [
                 'controller_name' => 'AppController',
 				'streamingList' => $streamingList,
-				'user' => $this->user
+				'user' => $this->getUser()
             ]);
         } else {
             // If the user is not authenticated, render non-authenticated homepage

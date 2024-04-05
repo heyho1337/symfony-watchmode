@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\WmService;
 use App\Form\AddToFavouriteType;
 
-class DetailsController extends AbstractController
+class DetailsController extends BaseController
 {
 
 	public function __construct(protected WmService $wm)

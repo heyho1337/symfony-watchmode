@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Controller;
+use App\Controller\BaseController;
 
-
-class DialogController
+class DialogController extends BaseController
 {
     
 	/**

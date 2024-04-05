@@ -2,14 +2,14 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\WmService;
 
 use function PHPUnit\Framework\fileExists;
 
-class ImageController extends AbstractController
+class ImageController extends BaseController
 {
     
 	public function __construct(protected WmService $wm)

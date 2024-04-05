@@ -8,16 +8,22 @@
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
-<div class="example-wrapper">
-	<img src="{{streamingRow['logo_100px']}}"/>
-    <h1>{{streamingRow['name']}}</h1>
+<section class="streamingPage max-w-[1400px] mx-auto">
+	<div class="head mb-[20px] grid bg-[url('{{ cdn }}images/streamLogos/{{ streamingRow['ios_scheme'] }}_{{ streamingRow['id'] }}.webp')] 
+		"
+		style="background-image:url('{{ cdn }}images/streamLogos/{{ streamingRow['ios_scheme'] }}_{{ streamingRow['id'] }}.webp');"
+		>
+    	<h1 class="font-black z-10 text-white uppercase text-5xl">{{streamingRow['name']}}</h1>
+	</div>
 	{% if genreList is defined %}
-		<input type="text" id="contentSearch" placeholder="Search...">
-		<ul id="genreList">
+		<input type="text" id="contentSearch" placeholder="Search..." class="mx-auto mt-[20px] mb-[20px] w-full max-w-[1200px] outline-none block h-[40px] leading-[40px] px-[8px]">
+		<ul class="max-w-[1000px] mb-[20px] flex-wrap mx-auto flex items-center grid-cols-8 gap-x-[8px] gap-y-[0px]" id="genreList">
 			{% for item in genreList %}
-				<div class="check">
-					<input type="checkbox" name="genre" id="genre_{{item['id']}}" value="{{item['id']}}"/>
-					<label for="genre_{{item['id']}}">{{item['name']}}</label>
+				<div class="check leading-[18px] relative inline-block items-center justify-items-center">
+					<input class="m-0 absolute p-0 opacity-0 z-10 cursor-pointer w-full h-full" type="checkbox" name="genre" id="genre_{{item['id']}}" value="{{item['id']}}"/>
+					<label class="relative font-ox p-0 text-center text-sm text-white font-light" for="genre_{{item['id']}}">
+						<span class="text-emerald-400">#</span>{{item['name']}}
+					</label>
 				</div>
 			{% endfor %}
 		</ul>
@@ -48,7 +54,7 @@
 		<p class="error">No recent content available.</p>
 	{% endif %}
 
-</div>
+</section>
 
 {% block javascripts %}
     <script src="{{ asset('js/AddToFavourites.js') }}"></script>

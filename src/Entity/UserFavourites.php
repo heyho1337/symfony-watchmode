@@ -30,9 +30,34 @@ class UserFavourites
     #[ORM\Column(length: 100)]
     private ?string $favType = null;
 
+	public ?string $form = null;
+    public ?array $details = null;
+
     public function getFavId(): ?int
     {
         return $this->favId;
+    }
+
+	public function getForm(): ?string
+    {
+        return $this->form;
+    }
+
+    public function setForm(string $form): static
+    {
+        $this->form = $form;
+        return $this;
+    }
+
+    public function getDetails(): ?array
+    {
+        return $this->details;
+    }
+
+    public function setDetails(array $details): static
+    {
+        $this->details = $details;
+        return $this;
     }
 
     public function getFavUserId(): ?int

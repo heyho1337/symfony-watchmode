@@ -39,3 +39,61 @@
 		}
 	}
 }
+
+.streamingPage{
+	.head{
+		position: relative;
+		height:200px;
+		display:grid;
+		align-items: center;
+		justify-items: center;
+		&:after{
+			width:100%;
+			height:100%;
+			display:block;
+			z-index: 1;
+			content:'';
+			position: absolute;
+			background: #2562ea;
+		}
+		&:before{
+			z-index: 2;
+			position: absolute;
+			content:'';
+			opacity:0.1;
+			background-image: inherit;
+			width:100%;
+			height:100%;
+			display:block;
+		}
+	}
+	#genreList{
+		.check{
+			input{
+				&:hover ~ label, &:checked ~ label{
+					color: #2dd4bf;
+					span{
+						color:#38bdf8;
+					}
+				}
+				&:checked ~ label{
+					color: #000;
+					background: #fff;
+					font-weight: 700;
+					padding:2px 5px;
+					span{
+						color:#38bdf8;
+					}
+				}
+			}
+			label{
+				transition:color 0.5s ease, background 0.5s ease, font-weight 0.5s ease, font-size 0.5s ease;
+			}
+			label{
+				span{
+					transition: color 0.5s ease;
+				}
+			}
+		}
+	}
+}

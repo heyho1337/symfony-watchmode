@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Service\WmService;
@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Form\AddToFavouriteType;
 use Psr\Log\LoggerInterface;
 
-class StreamingController extends AbstractController
+class StreamingController extends BaseController
 {
     
 	public function __construct(protected WmService $wm, protected LoggerInterface $logger)

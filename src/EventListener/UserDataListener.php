@@ -5,6 +5,7 @@ namespace App\EventListener;
 
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Bundle\SecurityBundle\Security;
+use App\Controller\BaseController; // Add this import
 
 class UserDataListener
 {
@@ -22,8 +23,9 @@ class UserDataListener
 
         // Inject the user data into the controller arguments
         $controller = $event->getController();
-        if (is_array($controller) && isset($controller[0])) {
-            $controller[0]->user = $user;
+        if (is_array($controller) && isset($controller[0]) && $controller[0] instanceof BaseController) {
+            $controller[0]->setUser($user);
         }
     }
 }
+

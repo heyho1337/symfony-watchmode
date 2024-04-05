@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Controller\DialogController;
@@ -18,7 +18,7 @@ use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use App\Message\AddToFavourites;
 use Symfony\Component\Messenger\MessageBusInterface;
-class FavouritesController extends AbstractController
+class FavouritesController extends BaseController
 {
     
 	protected FilesystemAdapter $cache;
@@ -45,13 +45,13 @@ class FavouritesController extends AbstractController
 		// Return the rendered template with the cached $favourites data
 		return $this->render('favourites/index.html.twig', [
 			'favourites' => $favourites,
-			'user' => $this->user
+			'user' => $this->getUser()
 		]);
 	}
 
 	public function setFavourites(){
 		$this->logger->info('Cache miss: setting data');
-		$data = $this->userFavouritesRepository->findByGroupedFavSourceId($this->user->getUserId());
+		$data = $this->userFavouritesRepository->findByGroupedFavSourceId($this->getUser()->getUserId());
 		foreach ($data as &$groups) {
 			foreach ($groups as &$title) {
 				$details = $this->wm->details($title->getFavStreamId());
@@ -59,8 +59,8 @@ class FavouritesController extends AbstractController
 				$formHtml = $this->renderView('favourites/RemoveFromFavourites.html.twig', [
 					'form' => $form->createView(),
 				]);
-				$title->form = $formHtml;
-				$title->details = $details;
+				$title->setForm($formHtml);
+				$title->setDetails($details);
 			}
 		}
 		return $data;
@@ -71,7 +71,7 @@ class FavouritesController extends AbstractController
 	{
 		try {
 			$userFavourite = $this->entityManager->getRepository(UserFavourites::class)->findOneBy([
-				'favUserId' => $this->user->getUserId(),
+				'favUserId' => $this->getUser()->getUserId(),
 				'favId' => $id,
 			]);
 
@@ -100,35 +100,10 @@ class FavouritesController extends AbstractController
 
         // Check if the form is submitted and valid
         if ($form->isSubmitted() && $form->isValid()) {
-			$userId = $this->user->getUserId();
+			$userId = $this->getUser()->getUserId();
 			$messageBus->dispatch(new AddToFavourites($userId, $sourceId, $id));
 			$dialog = new DialogController();
             return $this->json(['result' => $dialog->showDialog('Added to Favourites')]);
 		}
-		/*try {
-			$form = $this->createForm(AddToFavouriteType::class, null, ['action' => $this->generateUrl('save_to_favourites', ['sourceId' => $sourceId, 'id' => $id])]);
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-				$details = $this->wm->details($id);
-				$streamingRow = $this->wm->row($sourceId);
-                $userFavourite = new UserFavourites();
-                $userFavourite->setFavUserId($this->user->getUserId());
-                $userFavourite->setFavStreamId($id);
-				$userFavourite->setFavSourceId($sourceId);
-				$userFavourite->setFavSourceName($streamingRow['name']);
-                $userFavourite->setFavType(json_encode($details['genres'])); // Assuming getGenres() returns the correct value
-
-                $this->entityManager->persist($userFavourite);
-                $this->entityManager->flush();
-				$this->cache->delete('favourites_cache');
-
-				$dialog = new DialogController();
-                return $this->json(['result' => $dialog->showDialog('Added to Favourites')]);
-            }
-            return $this->json(['result' => 'Form submission failed'], Response::HTTP_BAD_REQUEST);
-        } catch (\Exception $e) {
-            $this->logger->error('An error occurred: ' . $e->getMessage());
-            return $this->json(['result' => 'An error occurred while processing the form'], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }*/
     }
 }
