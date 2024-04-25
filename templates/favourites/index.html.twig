@@ -1,41 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello FavouritesController!{% endblock %}
+{% block title %}{{ user.userName }}'s favourites{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>{{ user.userName }}'s favourites ✅</h1>
+<section class="favourites">
+    <h1 class="text-slate-200 mx-auto mb-[40px] font text-3xl table">{{ user.userName }}'s favourites</h1>
 
     {% if favourites is defined %}
-		<div id="recent">
-			{% for groupKey, group in favourites %}
-				<h2>{{groupKey}}</h2>
-				<ul>
-					{% for item in group %}
-						<li>
-							<a href="/details/{{item.details.id}}">
-								<img src="{{item.details.poster}}"/>
-								<h2>{{item.details.title}}</h2>
-								<p class="desc">{{item.details.plot_overview}}</p>
-								<span data-title="release date" class="release">{{item.details.release_date}}</span>
-								<span data-title="ended" class="end">{{item.details.end_year}}</span>
-								<span data-title="rating" class="rating">{{item.details.user_rating}}</span>
-							</a>
-							{{ item.form|raw }}
-						</li>
-					{% endfor %}
-				</ul>
-			{% endfor %}
-		</div>
+		{% for groupKey, group in favourites %}
+			<h2 class="w-full max-w-[1000px] text-slate-200 text-xl mx-auto mb-[20px] table text-left">{{groupKey}}</h2>
+			<ul id="recent" class="grid max-w-[1000px] mx-auto grid-cols-4 gap-x-[16px] gap-y-[32px] mb-[80px]">
+				{% for item in group %}
+					<li class="grid gap-y-[3px] font-ox">
+						<a class="grid gap-y-[16px] grid-cols-[5%,90%,5%]" href="/details/{{item.favSourceId}}/{{item.details.id}}">
+							<img class="w-full col-start-1 col-end-4" src="{{item.details.poster}}"/>
+							<h2 class="col-start-2 col-end-2 text-slate-200 font-black tracking- ">{{item.details.title}}</h2>
+							<span class="info col-start-2 col-end-2 text-sky-400">
+								<span data-title="release date">Started: {{item.details.release_date}}</span><br/>
+								{% if item.details.end_year == NULL %}
+									<span data-title="Ongoing">Ongoing</span><br/>
+								{% else %}
+									<span data-title="ended">Finished in {{item.details.end_year}}</span><br/>
+								{% endif %}
+								<span data-title="rating" class="rating">audience rating: {{item.details.user_rating}}</span>
+							</span>
+						</a>
+						{{ item.form|raw }}
+					</li>
+				{% endfor %}
+			</ul>
+		{% endfor %}
 	{% else %}
 		<p class="error">No favourite content available.</p>
 	{% endif %}
-</div>
+</section>
 {% endblock %}
 
 {% block javascripts %}

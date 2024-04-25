@@ -20,45 +20,47 @@
         {% endblock %}
     </head>
     <body class="font-audio bg-slate-800">
-		<header class="z-10 shadow-lg sticky top-0 grid items-center bg-gradient-to-r from-blue-50 from-[115px] via-blue-600 via-40% to-black to-90% p-[10px] grid-cols-[89px,auto,28px] gap-x-[16px] text-slate-50">
-			<picture>
-				<source type="image/png" srcset="{{cdn}}images/logo6.png">
-				<source type="image/webp" srcset="{{cdn}}images/logo6.webp">
-				<img width="89" height='50' src="{{cdn}}images/logo6.png" alt="Logo"/>
-			</picture>
-			<nav class="block md:grid justify-end mainNav">
-				<input class="block md:hidden " type="checkbox"/>
-				<span class="block md:hidden icon-before icon-bars"></span>
-				<ul class="font-ox uppercase opacity-0 h-0 z-0 pointer-events-none md:flex md:gap-x-[16px] md:opacity-100 md:h-auto md:z-1 md:pointer-events-auto font-medium">
-					<li>
-						<a class="transition duration-500 hover:text-cyan-300" href="/" title="">Home</a>
-					</li>
-					<li>
-						<a class="transition duration-500 hover:text-cyan-300" href="/about" title="">About</a>
-					</li>
-					<li>
-						<a class="transition duration-500 hover:text-cyan-300" href="/contact" title="">Contact</a>
-					</li>
-				</ul>
-			</nav>
+		{% if user != false %}
+			<header class="z-10 shadow-lg sticky top-0 grid items-center bg-gradient-to-r from-blue-50 from-[115px] via-blue-600 via-40% to-black to-90% p-[10px] grid-cols-[89px,auto,28px] gap-x-[16px] text-slate-50">
+				<picture>
+					<source type="image/png" srcset="{{cdn}}images/logo6.png">
+					<source type="image/webp" srcset="{{cdn}}images/logo6.webp">
+					<img width="89" height='50' src="{{cdn}}images/logo6.png" alt="Logo"/>
+				</picture>
+				<nav class="block md:grid justify-end mainNav">
+					<input class="block md:hidden " type="checkbox"/>
+					<span class="block md:hidden icon-before icon-bars"></span>
+					<ul class="font-ox uppercase opacity-0 h-0 z-0 pointer-events-none md:flex md:gap-x-[16px] md:opacity-100 md:h-auto md:z-1 md:pointer-events-auto font-medium">
+						<li>
+							<a class="transition duration-500 hover:text-cyan-300" href="/" title="">Home</a>
+						</li>
+						<li>
+							<a class="transition duration-500 hover:text-cyan-300" href="/about" title="">About</a>
+						</li>
+						<li>
+							<a class="transition duration-500 hover:text-cyan-300" href="/contact" title="">Contact</a>
+						</li>
+					</ul>
+				</nav>
 
-			<nav class="userNav relative">
-				<input type="checkbox" class="opacity-0 z-10 absolute w-full h-full cursor-pointer bg-transparent border-0 p-0 m-0 outline-none"/>
-				<span class="icon-before icon-solid fa-circle-user text-[28px] leading-[28px] align-top block"></span>
-				<ul class="bg-slate-900 shadow-md shadow-slate-950 rounded-[8px] absolute right-0 opacity-0 h-0 z-0 pointer-events-none translate-y-[-50px] font-ox font-medium mt-[30px]">
-					<li>
-						<a href="/profile" class="hover:text-cyan-300" title="">Profile</a>
-					</li>
-					<li>
-						<a href="/favourites" class="hover:text-cyan-300" title="">Favourites</a>
-					</li>
-					<li>
-						<a href="/logout" class="hover:text-cyan-300" title="">Logout</a>
-					</li>
-				</ul>
-			</nav>
+				<nav class="userNav relative">
+					<input type="checkbox" class="opacity-0 z-10 absolute w-full h-full cursor-pointer bg-transparent border-0 p-0 m-0 outline-none"/>
+					<span class="icon-before icon-solid fa-circle-user text-[28px] leading-[28px] align-top block"></span>
+					<ul class="bg-slate-900 shadow-md shadow-slate-950 rounded-[8px] absolute right-0 opacity-0 h-0 z-0 pointer-events-none translate-y-[-50px] font-ox font-medium mt-[30px]">
+						<li>
+							<a href="/profile" class="hover:text-cyan-300" title="">Profile</a>
+						</li>
+						<li>
+							<a href="/favourites" class="hover:text-cyan-300" title="">Favourites</a>
+						</li>
+						<li>
+							<a href="/logout" class="hover:text-cyan-300" title="">Logout</a>
+						</li>
+					</ul>
+				</nav>
 
-		</header>
+			</header>
+		{% endif %}
 		<main class="mt-[20px]">
        		{% block body %}{% endblock %}
 		</main>

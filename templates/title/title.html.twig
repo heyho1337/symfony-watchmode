@@ -1,6 +1,11 @@
-<li>
-	<a href="/details/{{item.id}}">
-		{{item.title}}
+<li class="titleWrapper grid gap-y-[3px] font-ox">
+	<a href="/details/{{sourceId}}/{{item.id}}" class="grid gap-y-[16px] grid-cols-[5%,90%,5%]">
+		<img class="w-full col-start-1 col-end-4" src="https://cdn.watchmode.com/posters/0{{item.id}}_poster_w185.jpg"/>
+		<h3 class="col-start-2 col-end-2 text-slate-200 font-black tracking- h-[47px]">{{item.title}}</h3>
+		<span data-title="release date" class="h-[47px] col-start-2 col-end-2 info release text-slate-200 text-sky-400">
+			{{item['year']}}<br/>
+			{{item['type']}}
+		</span>
 	</a>
 	{{ form|raw }}
 </li>

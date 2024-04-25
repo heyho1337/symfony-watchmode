@@ -1,19 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello StreamingController!{% endblock %}
+{% block title %}Streaming List{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
 <section class="streamingPage max-w-[1400px] mx-auto">
 	<div class="head mb-[20px] grid bg-[url('{{ cdn }}images/streamLogos/{{ streamingRow['ios_scheme'] }}_{{ streamingRow['id'] }}.webp')] 
 		"
 		style="background-image:url('{{ cdn }}images/streamLogos/{{ streamingRow['ios_scheme'] }}_{{ streamingRow['id'] }}.webp');"
 		>
-    	<h1 class="font-black z-10 text-white uppercase text-5xl">{{streamingRow['name']}}</h1>
+    	<h1 class="bg-gray-950 px-8 font-black z-10 text-white uppercase text-5xl">{{streamingRow['name']}}</h1>
 	</div>
 	{% if genreList is defined %}
 		<input type="text" id="contentSearch" placeholder="Search..." class="mx-auto mt-[20px] mb-[20px] w-full max-w-[1200px] outline-none block h-[40px] leading-[40px] px-[8px]">
@@ -27,24 +23,29 @@
 				</div>
 			{% endfor %}
 		</ul>
-		<ul id="contentList">
-
-		</ul>
 	{% else %}
 		<p class="error">No genres available.</p>
 	{% endif %}
 
+	<h2 class="resultTitle max-w-[1000px] mx-auto text-4xl text-slate-200 mb-[20px]">Search results</h2>
+	<ul id="contentList" class="grid max-w-[1000px] mx-auto mb-[60px] grid-cols-5 gap-x-[16px] gap-y-[32px]">
+
+	</ul>
+
 	{% if recent is defined %}
-		<ul id="recent">
+		<h2 class="max-w-[1000px] mx-auto text-4xl text-slate-200 mb-[20px]">Recent releases</h2>
+		<ul id="recent" class="grid max-w-[1000px] mx-auto grid-cols-5 gap-x-[16px] gap-y-[32px]">
 			{% for item in recent %}
-				<li>
-					<a href="/details/{{item['id']}}">
-						<img src="{{item['poster_url']}}"/>
-						<h2>{{item['title']}}</h2>
-						<span data-title="release date" class="info release">{{item['source_release_date']}}</span>
-						{% if item['type'] == 'tv_series' %}
-							<span data-title="season" class="info season">{{item['season_number']}}</span>
-						{% endif %}
+				<li class="grid gap-y-[3px] font-ox">
+					<a class="grid gap-y-[16px] grid-cols-[5%,90%,5%]" href="/details/{{sourceId}}/{{item['id']}}">
+						<img class="w-full col-start-1 col-end-4" src="{{item['poster_url']}}"/>
+						<h3 class="col-start-2 col-end-2 text-slate-200 font-black tracking- h-[47px]">{{item['title']}}</h3>
+						<span data-title="release date" class="h-[47px] col-start-2 col-end-2 info release text-sky-400">
+							{{item['source_release_date']}} <br/>
+							{% if item['type'] == 'tv_series' %}
+								Season {{item['season_number']}}
+							{% endif %}
+						</span>
 					</a>
 					{{ item['form']|raw }}
 				</li>
@@ -114,6 +115,7 @@
     contentSearch.addEventListener('input', () => {
         // Filter content list based on search term
         const searchTerm = contentSearch.value.toLowerCase();
+		updateContentList();
         const filteredList = contentListData.filter(item => item.title.toLowerCase().includes(searchTerm));
         renderResults(filteredList); // Render filtered results
     });

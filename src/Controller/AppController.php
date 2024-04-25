@@ -18,22 +18,20 @@ class AppController extends BaseController
 	#[Route('/', name: 'app_home')]
     public function index(): Response
     {
-        
-	//phpinfo();
-	// Check if the user is authenticated
+		// Check if the user is authenticated
         if ($this->security->isGranted('ROLE_USER')) {
             // If the user is authenticated, render authenticated homepage
 			$streamingList = $this->wm->streamingList();
-			
             return $this->render('app/index.html.twig', [
                 'controller_name' => 'AppController',
 				'streamingList' => $streamingList,
-				'user' => $this->getUser()
+				'user' => $this->getUser(),
             ]);
         } else {
             // If the user is not authenticated, render non-authenticated homepage
             return $this->render('app/nonauth.html.twig', [
                 'controller_name' => 'AppController',
+				'user' => false,
             ]);
         }
     }

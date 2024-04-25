@@ -22,6 +22,7 @@
 ###> symfony/asset-mapper ###
 /public/assets/
 /assets/vendor/
+/public/images/streamLogos/
 ###< symfony/asset-mapper ###
 
 # Ignore all .env files

@@ -1,0 +1,10 @@
+@media(min-width:1200px){
+	form{
+		button[type="submit"]{
+			transition: background 0.5s ease;
+			&:hover{
+				background: rgb(71 85 105);
+			}
+		}
+	}
+}

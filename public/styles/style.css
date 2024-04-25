@@ -1,7 +1,9 @@
-@layer default,custom;
+@layer default,custom,hover;
 
 @import "all.css";
 @import "./custom.css" layer(custom);
+@import "./form.css" layer(custom);
+@import "./hover.css" layer(hover);
 
 @layer default {
 	@tailwind base;

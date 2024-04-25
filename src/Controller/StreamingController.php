@@ -9,19 +9,28 @@ use App\Service\WmService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Form\AddToFavouriteType;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Bundle\SecurityBundle\Security;
 
 class StreamingController extends BaseController
 {
     
-	public function __construct(protected WmService $wm, protected LoggerInterface $logger)
+	public function __construct(protected WmService $wm, 
+		protected LoggerInterface $logger,
+		protected Security $security, 
+		protected RequestStack $requestStack)
     {
-       
+		parent::__construct($security, $requestStack);
     }
 	
 	#[Route('/streaming/{id}', name: 'app_streaming')]
     public function index(string $id): Response
     {
         
+		if ($response = $this->validAuth()) {
+            return $response;
+        }
+		
 		$streamingRow = $this->wm->row($id);
 		$genreList = $this->wm->genreList();
 		$recent = $this->wm->recent($id);
@@ -38,7 +47,8 @@ class StreamingController extends BaseController
 			'streamingRow' => $streamingRow,
 			'genreList' => $genreList,
 			'sourceId' => $id,
-			'recent' => $recent 
+			'recent' => $recent,
+			'user' => $this->getUser()
         ]);
     }
 
@@ -49,7 +59,7 @@ class StreamingController extends BaseController
 		return $this->setTitles($result['titles'],$sourceIds);
 	}
 
-	#[Route('/content/{sourceIds}/{genreIds}', name: 'app_contentSourceGenreList', methods:['get'])]
+	#[Route('/content/{sourceIds}/{genreIds}', name: 'app_contentSourceGenreList', methods:['GET'])]
 	public function contentSourceGenreList(string $sourceIds, string $genreIds): JsonResponse
 	{
 		$result = $this->wm->query("list-titles?source_ids={$sourceIds}&genres={$genreIds}");
@@ -65,7 +75,8 @@ class StreamingController extends BaseController
 			]);
 			$title['twig'] = $this->render('title/title.html.twig', [
 				'item' => $title,
-				'form' => $formHtml
+				'form' => $formHtml,
+				'sourceId' => $id,
 			])->getContent();
 		}
 		$this->logger->error($this->json($titles));

@@ -1,0 +1,68 @@
+form{
+	display:grid;
+	grid-template-columns: 100%;
+	grid-row-gap: 3px;
+	width:100vw;
+	max-width:400px;
+	justify-items: center;
+	button[type="submit"]{
+		border-radius: 0.5rem;
+		background: #fff;
+		padding:0px 8px;
+		height:30px;
+		max-width: max-content;
+		font-family: 'Oxanium';
+	}
+	> div{
+		width:100%;
+		&:has(input[type="checkbox"]){
+			label{
+				font-family: 'Oxanium';
+				font-size:14px;
+				font-weight:400;
+				margin-right:6px;
+				color:#fff;
+			}
+		}
+		&:not(:has(input[type="checkbox"])){
+			position: relative;
+			background-color: rgb(71 85 105);
+			border-radius: 0.5rem;
+			&:has(input:placeholder-shown){
+				label{
+					opacity:0;
+				}
+			}
+			label{
+				font-family: 'Oxanium';
+				font-size:8px;
+				font-weight:700;
+				position: absolute;
+				z-index: 1;
+				left:12px;
+				top:2px;
+				transition: opacity 0.5s ease;
+				color:#fff;
+				opacity:0.8;
+			}
+			input{
+				z-index: 2;
+				height:40px;
+				width:100%;
+				border:0px;
+				background: transparent;
+				text-indent: 12px;
+				font-family: 'Oxanium';
+				font-size:14px;
+				font-weight:400;
+				color:#fff;
+				&::placeholder{
+					font-family: inherit;
+					font-size: inherit;
+					color: inherit;
+					font-weight: inherit;
+				}
+			}
+		}
+	}
+}

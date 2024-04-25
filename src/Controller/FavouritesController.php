@@ -15,34 +15,39 @@ use App\Form\AddToFavouriteType;
 use App\Form\RemoveFromFavouriteType;
 use App\Repository\UserFavouritesRepository;
 use Symfony\Contracts\Cache\ItemInterface;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use App\Message\AddToFavourites;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Bundle\SecurityBundle\Security;
 class FavouritesController extends BaseController
 {
-    
-	protected FilesystemAdapter $cache;
 	
 	public function __construct(
 		protected WmService $wm, 
 		protected EntityManagerInterface $entityManager, 
 		protected LoggerInterface $logger, 
-		protected UserFavouritesRepository $userFavouritesRepository)
+		protected UserFavouritesRepository $userFavouritesRepository,
+		protected CacheInterface $cache,
+		protected Security $security, 
+		protected RequestStack $requestStack)
     {
-		$this->cache = new FilesystemAdapter();
+		parent::__construct($security, $requestStack);
     }
 
 	#[Route('/favourites', name: 'app_favourites')]
     public function index(): Response
 	{
-		$cacheKey = md5("favourites_cache");
-		$favourites = $this->cache->get($cacheKey, function (ItemInterface $item){
-            $item->expiresAfter((int)$_ENV['CACHE']);
+		if ($response = $this->validAuth()) {
+            return $response;
+        }
+		
+		$favourites = $this->cache->get('favourites_cache', function (ItemInterface $item) {
+            //$item->expiresAfter((int)$_ENV['CACHE']);
             $this->logger->info('Cache miss: Populating favourites from database');
             return $this->setFavourites();
         });
 
-		// Return the rendered template with the cached $favourites data
 		return $this->render('favourites/index.html.twig', [
 			'favourites' => $favourites,
 			'user' => $this->getUser()
@@ -50,7 +55,6 @@ class FavouritesController extends BaseController
 	}
 
 	public function setFavourites(){
-		$this->logger->info('Cache miss: setting data');
 		$data = $this->userFavouritesRepository->findByGroupedFavSourceId($this->getUser()->getUserId());
 		foreach ($data as &$groups) {
 			foreach ($groups as &$title) {

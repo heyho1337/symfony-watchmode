@@ -1,4 +1,4 @@
-@layer default,custom;
+@layer default,custom,hover;
 
 /*!
  * Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com
@@ -10458,6 +10458,10 @@ readers do not read off random characters that represent icons */
 }
 
 @layer custom{
+  *{
+    outline:none !important
+  }
+
   *:before{
     vertical-align:top
   }
@@ -10499,6 +10503,23 @@ readers do not read off random characters that represent icons */
     color:#67e8f9
   }
 
+  form[name=add_to_favourite],form[name=remove_from_favourite]{
+    width:100%;
+    align-items:end
+  }
+
+  form[name=add_to_favourite] #add_to_favourite,form[name=add_to_favourite] #remove_from_favourite,form[name=remove_from_favourite] #add_to_favourite,form[name=remove_from_favourite] #remove_from_favourite{
+    background:rgba(0,0,0,0)
+  }
+
+  #recent li a img,#contentList li a img{
+    aspect-ratio:187/281
+  }
+
+  .streamingPage:not(:has(.titleWrapper)) .resultTitle{
+    display:none
+  }
+
   .streamingPage .head{
     position:relative;
     height:200px;
@@ -10507,21 +10528,11 @@ readers do not read off random characters that represent icons */
     justify-items:center
   }
 
-  .streamingPage .head:after{
-    width:100%;
-    height:100%;
-    display:block;
-    z-index:1;
-    content:"";
-    position:absolute;
-    background:#2562ea
-  }
-
   .streamingPage .head:before{
     z-index:2;
     position:absolute;
     content:"";
-    opacity:.1;
+    opacity:1;
     background-image:inherit;
     width:100%;
     height:100%;
@@ -10555,7 +10566,112 @@ readers do not read off random characters that represent icons */
     transition:color .5s ease
   }
 
+  main:has(.nonAuth){
+    margin:0px !important
+  }
+
   /*# sourceMappingURL=custom.css.map */
+
+  form{
+    display:grid;
+    grid-template-columns:100%;
+    grid-row-gap:3px;
+    width:100vw;
+    max-width:400px;
+    justify-items:center
+  }
+
+  form button[type=submit]{
+    border-radius:.5rem;
+    background:#fff;
+    padding:0px 8px;
+    height:30px;
+    max-width:-moz-max-content;
+    max-width:max-content;
+    font-family:"Oxanium"
+  }
+
+  form>div{
+    width:100%
+  }
+
+  form>div:has(input[type=checkbox]) label{
+    font-family:"Oxanium";
+    font-size:14px;
+    font-weight:400;
+    margin-right:6px;
+    color:#fff
+  }
+
+  form>div:not(:has(input[type=checkbox])){
+    position:relative;
+    background-color:#475569;
+    border-radius:.5rem
+  }
+
+  form>div:not(:has(input[type=checkbox])):has(input:-moz-placeholder-shown) label{
+    opacity:0
+  }
+
+  form>div:not(:has(input[type=checkbox])):has(input:placeholder-shown) label{
+    opacity:0
+  }
+
+  form>div:not(:has(input[type=checkbox])) label{
+    font-family:"Oxanium";
+    font-size:8px;
+    font-weight:700;
+    position:absolute;
+    z-index:1;
+    left:12px;
+    top:2px;
+    transition:opacity .5s ease;
+    color:#fff;
+    opacity:.8
+  }
+
+  form>div:not(:has(input[type=checkbox])) input{
+    z-index:2;
+    height:40px;
+    width:100%;
+    border:0px;
+    background:rgba(0,0,0,0);
+    text-indent:12px;
+    font-family:"Oxanium";
+    font-size:14px;
+    font-weight:400;
+    color:#fff
+  }
+
+  form>div:not(:has(input[type=checkbox])) input::-moz-placeholder{
+    font-family:inherit;
+    font-size:inherit;
+    color:inherit;
+    font-weight:inherit
+  }
+
+  form>div:not(:has(input[type=checkbox])) input::placeholder{
+    font-family:inherit;
+    font-size:inherit;
+    color:inherit;
+    font-weight:inherit
+  }
+
+  /*# sourceMappingURL=form.css.map */
+}
+
+@layer hover{
+  @media(min-width: 1200px){
+    form button[type=submit]{
+      transition:background .5s ease
+    }
+
+    form button[type=submit]:hover{
+      background:#475569
+    }
+  }
+
+  /*# sourceMappingURL=hover.css.map */
 }
 
 @layer default {
@@ -11162,6 +11278,10 @@ video {
     position: sticky;
   }
 
+  .left-1\/2{
+    left: 50%;
+  }
+
   .right-0{
     right: 0px;
   }
@@ -11170,12 +11290,92 @@ video {
     top: 0px;
   }
 
+  .top-1\/2{
+    top: 50%;
+  }
+
   .z-0{
     z-index: 0;
   }
 
   .z-10{
     z-index: 10;
+  }
+
+  .col-start-1{
+    grid-column-start: 1;
+  }
+
+  .col-start-2{
+    grid-column-start: 2;
+  }
+
+  .col-end-1{
+    grid-column-end: 1;
+  }
+
+  .col-end-2{
+    grid-column-end: 2;
+  }
+
+  .col-end-3{
+    grid-column-end: 3;
+  }
+
+  .col-end-4{
+    grid-column-end: 4;
+  }
+
+  .row-start-1{
+    grid-row-start: 1;
+  }
+
+  .row-start-2{
+    grid-row-start: 2;
+  }
+
+  .row-start-3{
+    grid-row-start: 3;
+  }
+
+  .row-start-4{
+    grid-row-start: 4;
+  }
+
+  .row-start-5{
+    grid-row-start: 5;
+  }
+
+  .row-start-6{
+    grid-row-start: 6;
+  }
+
+  .row-end-1{
+    grid-row-end: 1;
+  }
+
+  .row-end-2{
+    grid-row-end: 2;
+  }
+
+  .row-end-3{
+    grid-row-end: 3;
+  }
+
+  .row-end-4{
+    grid-row-end: 4;
+  }
+
+  .row-end-5{
+    grid-row-end: 5;
+  }
+
+  .row-end-6{
+    grid-row-end: 6;
+  }
+
+  .row-end-8{
+    grid-row-end: 8;
   }
 
   .m-0{
@@ -11187,12 +11387,12 @@ video {
     margin-right: auto;
   }
 
-  .mb-3{
-    margin-bottom: 0.75rem;
-  }
-
   .mb-\[20px\]{
     margin-bottom: 20px;
+  }
+
+  .mb-\[60px\]{
+    margin-bottom: 60px;
   }
 
   .mt-\[20px\]{
@@ -11201,6 +11401,18 @@ video {
 
   .mt-\[30px\]{
     margin-top: 30px;
+  }
+
+  .mt-\[40px\]{
+    margin-top: 40px;
+  }
+
+  .mb-\[40px\]{
+    margin-bottom: 40px;
+  }
+
+  .mb-\[80px\]{
+    margin-bottom: 80px;
   }
 
   .block{
@@ -11213,6 +11425,10 @@ video {
 
   .flex{
     display: flex;
+  }
+
+  .table{
+    display: table;
   }
 
   .grid{
@@ -11231,12 +11447,28 @@ video {
     height: 40px;
   }
 
+  .h-\[47px\]{
+    height: 47px;
+  }
+
   .h-full{
     height: 100%;
   }
 
+  .h-\[71px\]{
+    height: 71px;
+  }
+
   .w-full{
     width: 100%;
+  }
+
+  .max-w-\[1000px\]{
+    max-width: 1000px;
+  }
+
+  .max-w-\[1200px\]{
+    max-width: 1200px;
   }
 
   .max-w-\[1400px\]{
@@ -11247,16 +11479,23 @@ video {
     max-width: 800px;
   }
 
-  .max-w-\[140px\]{
-    max-width: 140px;
+  .max-w-max{
+    max-width: -moz-max-content;
+    max-width: max-content;
   }
 
-  .max-w-\[1000px\]{
-    max-width: 1000px;
+  .shrink{
+    flex-shrink: 1;
   }
 
-  .max-w-\[1200px\]{
-    max-width: 1200px;
+  .-translate-x-1\/2{
+    --tw-translate-x: -50%;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .-translate-y-1\/2{
+    --tw-translate-y: -50%;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   }
 
   .translate-y-\[-50px\]{
@@ -11272,6 +11511,14 @@ video {
     cursor: pointer;
   }
 
+  .grid-cols-2{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid-cols-5{
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
   .grid-cols-6{
     grid-template-columns: repeat(6, minmax(0, 1fr));
   }
@@ -11280,8 +11527,20 @@ video {
     grid-template-columns: repeat(8, minmax(0, 1fr));
   }
 
+  .grid-cols-\[5\%\2c 90\%\2c 5\%\]{
+    grid-template-columns: 5% 90% 5%;
+  }
+
   .grid-cols-\[89px\2c auto\2c 28px\]{
     grid-template-columns: 89px auto 28px;
+  }
+
+  .grid-cols-4{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .grid-rows-\[repeat\(9\2c min-content\)\]{
+    grid-template-rows: repeat(9,min-content);
   }
 
   .flex-wrap{
@@ -11318,16 +11577,46 @@ video {
          column-gap: 8px;
   }
 
+  .gap-y-4{
+    row-gap: 1rem;
+  }
+
   .gap-y-\[0px\]{
     row-gap: 0px;
+  }
+
+  .gap-y-\[16px\]{
+    row-gap: 16px;
+  }
+
+  .gap-y-\[32px\]{
+    row-gap: 32px;
+  }
+
+  .gap-y-\[3px\]{
+    row-gap: 3px;
   }
 
   .rounded-\[8px\]{
     border-radius: 8px;
   }
 
+  .rounded-lg{
+    border-radius: 0.5rem;
+  }
+
   .border-0{
     border-width: 0px;
+  }
+
+  .bg-gray-950{
+    --tw-bg-opacity: 1;
+    background-color: rgb(3 7 18 / var(--tw-bg-opacity));
+  }
+
+  .bg-slate-600{
+    --tw-bg-opacity: 1;
+    background-color: rgb(71 85 105 / var(--tw-bg-opacity));
   }
 
   .bg-slate-800{
@@ -11383,9 +11672,23 @@ video {
     padding: 10px;
   }
 
+  .px-8{
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
   .px-\[8px\]{
     padding-left: 8px;
     padding-right: 8px;
+  }
+
+  .py-2{
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .text-left{
+    text-align: left;
   }
 
   .text-center{
@@ -11404,6 +11707,16 @@ video {
     font-family: Oxanium, sans-serif;
   }
 
+  .text-3xl{
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+
+  .text-4xl{
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+
   .text-5xl{
     font-size: 3rem;
     line-height: 1;
@@ -11416,6 +11729,11 @@ video {
   .text-sm{
     font-size: 0.875rem;
     line-height: 1.25rem;
+  }
+
+  .text-xl{
+    font-size: 1.25rem;
+    line-height: 1.75rem;
   }
 
   .font-black{
@@ -11451,9 +11769,24 @@ video {
     color: rgb(52 211 153 / var(--tw-text-opacity));
   }
 
+  .text-sky-400{
+    --tw-text-opacity: 1;
+    color: rgb(56 189 248 / var(--tw-text-opacity));
+  }
+
+  .text-slate-200{
+    --tw-text-opacity: 1;
+    color: rgb(226 232 240 / var(--tw-text-opacity));
+  }
+
   .text-slate-50{
     --tw-text-opacity: 1;
     color: rgb(248 250 252 / var(--tw-text-opacity));
+  }
+
+  .text-slate-950{
+    --tw-text-opacity: 1;
+    color: rgb(2 6 23 / var(--tw-text-opacity));
   }
 
   .text-white{
@@ -11571,6 +11904,11 @@ video {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.hover\:bg-slate-950:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(2 6 23 / var(--tw-bg-opacity));
+}
+
 .hover\:text-cyan-300:hover{
   --tw-text-opacity: 1;
   color: rgb(103 232 249 / var(--tw-text-opacity));
@@ -11610,6 +11948,16 @@ video {
 
   .md\:opacity-100{
     opacity: 1;
+  }
+
+  .md\:transition-colors{
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .md\:duration-500{
+    transition-duration: 500ms;
   }
 }
 /*# sourceMappingURL=output.css.map */

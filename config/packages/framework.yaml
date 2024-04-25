@@ -11,7 +11,7 @@ framework:
     cache:
         pools:
             my_cache_pool:
-                adapter: cache.adapter.filesystem
+                adapter: cache.adapter.redis
                 default_lifetime: 3600 # Set your desired cache expiration time
                 public: false
 when@test:

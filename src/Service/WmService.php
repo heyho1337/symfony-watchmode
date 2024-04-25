@@ -9,20 +9,19 @@ use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 use DateTime;
 class WmService extends AbstractController
 {
     protected string $apiKey;
-    protected string$apiUrl;
-	protected FilesystemAdapter $cache;
+    protected string $apiUrl;
 	protected string $dir;
 
-    public function __construct(ParameterBagInterface $params, protected LoggerInterface $logger)
+    public function __construct(ParameterBagInterface $params, protected LoggerInterface $logger, protected CacheInterface $cache)
     {
         $this->apiKey = $_ENV['WM_APIKEY'];
         $this->apiUrl = $_ENV['WM_APIURL'];
-		$this->cache = new FilesystemAdapter();
 		$this->dir = $params->get('kernel.project_dir') . '/public/images/streamLogos/';
     }
 
@@ -73,13 +72,21 @@ class WmService extends AbstractController
 	public function query(string $url): array
     {
         $cacheKey = md5($url);
-        $cachedData = $this->cache->get($cacheKey, function (ItemInterface $item) use ($url) {
-            $item->expiresAfter((int)$_ENV['CACHE']);
-			$this->logger->info('Cache miss: Populating favourites from database');
-           	return $this->fetchDataFromApi($url);
-        });
 
-        return $cachedData;
+		$cachedData = $this->cache->get($cacheKey, function (ItemInterface $item) use ($url) {
+            //$item->expiresAfter((int)$_ENV['CACHE']);
+            $this->logger->info('Cache miss: Fetching data from API');
+			return $this->fetchDataFromApi($url);
+        });
+		
+		/*if(isset($cachedData['success'])){
+			$this->cache->save($this->cache->getItem($cacheKey)->set($cachedData));
+			return $this->fetchDataFromApi($url);
+		}
+		else{
+			return $cachedData;
+		}*/
+		return $cachedData;
     }
 
 	private function checkLogo(&$row)
@@ -95,7 +102,7 @@ class WmService extends AbstractController
 
 	private function fetchDataFromApi(string $url): array
     {
-        $client = HttpClient::create();
+		$client = HttpClient::create();
         $this->logger->info('Cache miss: fecthing  data');
         try {
             $response = $client->request('GET', "{$this->apiUrl}/{$url}", [
